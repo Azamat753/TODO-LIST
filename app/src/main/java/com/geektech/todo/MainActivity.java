@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -40,8 +41,12 @@ public class MainActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.deleteLastTask();
-                Storage.save(tasks, MainActivity.this);
+                if (tasks!=null) {
+                    adapter.deleteLastTask();
+                    Storage.save(tasks, MainActivity.this);
+                }else{
+                    Toast.makeText(MainActivity.this, "Список пуст", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         Button button = findViewById(R.id.open);
