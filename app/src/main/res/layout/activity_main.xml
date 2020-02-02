@@ -20,19 +20,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <Button
-        android:id="@+id/delete_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="удалить"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/open"/>
+
     <Button
         android:id="@+id/edit_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="редактировать"
-        app:layout_constraintRight_toLeftOf="@id/delete_btn"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintRight_toLeftOf="@id/open"
+        app:layout_constraintBottom_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

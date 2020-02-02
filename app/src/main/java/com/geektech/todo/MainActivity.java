@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Task> tasks = new ArrayList<>();
     TaskAdapter adapter;
-    private Task task;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,34 +34,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 tasks.get(position);
-               editTask();
+                editTask();
+                Storage.save(tasks, MainActivity.this);
                 Toast.makeText(MainActivity.this, "редактирование", Toast.LENGTH_SHORT).show();
             }
-        });
-        Button delete = findViewById(R.id.delete_btn);
-        final Button edit = findViewById(R.id.edit_btn);
-        edit.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                if (tasks != null) {
-                    Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
-                    startActivityForResult(intent, 43);
-                } else {
-                    Toast.makeText(MainActivity.this, "Список пуст", Toast.LENGTH_SHORT).show();
-                }
+            public void onItemLongClick(int position) {
+                adapter.deleteLastTask();
+                Storage.save(tasks, MainActivity.this);
+                Toast.makeText(MainActivity.this, "Удалено", Toast.LENGTH_SHORT).show();
+
             }
         });
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (tasks != null) {
-                    adapter.deleteLastTask();
-                    Storage.save(tasks, MainActivity.this);
-                } else {
-                    Toast.makeText(MainActivity.this, "Список пуст", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
         Button button = findViewById(R.id.open);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

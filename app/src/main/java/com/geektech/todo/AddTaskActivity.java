@@ -25,37 +25,37 @@ public class AddTaskActivity extends AppCompatActivity {
         deadline = findViewById(R.id.task_deadline);
 
         Button saveBtn = findViewById(R.id.task_save);
-Button editSave= findViewById(R.id.edit_save);
-editSave.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Task task = new Task();
+        Button editSave = findViewById(R.id.edit_save);
+        editSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Task task = new Task();
 
-        if (title.getText().toString().trim().equals("")) {
-            showMessage("Input title please");
-            return;
-        } else {
-            task.title = title.getText().toString().trim();
-        }
+                if (title.getText().toString().trim().equals("")) {
+                    showMessage("Input title please");
+                    return;
+                } else {
+                    task.title = title.getText().toString().trim();
+                }
 
-        if (description.getText().toString().trim().equals("")) {
-            showMessage("Input description please");
-            return;
-        } else {
-            task.description = description.getText().toString().trim();
-        }
+                if (description.getText().toString().trim().equals("")) {
+                    showMessage("Input description please");
+                    return;
+                } else {
+                    task.description = description.getText().toString().trim();
+                }
 
-        task.deadline = deadline.getText().toString();
-
-
-        Intent intent = new Intent();
-        intent.putExtra("edit", task);
-        setResult(RESULT_OK, intent);
-        finish();
+                task.deadline = deadline.getText().toString();
 
 
-    }
-});
+                Intent intent = new Intent();
+                intent.putExtra("edit", task);
+                setResult(RESULT_OK, intent);
+                finish();
+
+
+            }
+        });
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
