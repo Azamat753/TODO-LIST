@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,10 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     ArrayList<Task> tasks;
+    OnItemClickListener onItemClickListener;
+
     public TaskAdapter(ArrayList<Task> tasks) {
+
         this.tasks = tasks;
     }
 
@@ -35,14 +39,48 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public int getItemCount() {
         return tasks.size();
     }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public void deleteLastTask() {
-        if (tasks!=null){
+        if (tasks != null) {
             try {
                 tasks.remove(tasks.get(tasks.size() - 1));
                 notifyDataSetChanged();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.getMessage();
             }
         }
     }
+
+
+
+ class TaskViewHolder extends RecyclerView.ViewHolder {
+
+     TextView title;
+     TextView description;
+     TextView deadline;
+
+     public TaskViewHolder(@NonNull final View itemView) {
+         super(itemView);
+         title = itemView.findViewById(R.id.vh_title);
+         description = itemView.findViewById(R.id.vh_description);
+         deadline = itemView.findViewById(R.id.vh_deadline);
+         itemView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 onItemClickListener.onItemClick(getAdapterPosition());
+             }
+         });
+     }
+
+     public void onBind(Task task) {
+         title.setText(task.title);
+         description.setText(task.description);
+         deadline.setText(task.deadline);
+     }
+ }
 }
+

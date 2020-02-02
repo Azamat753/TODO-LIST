@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Task> tasks = new ArrayList<>();
     TaskAdapter adapter;
+    private Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,22 +30,34 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                tasks.get(position);
+               editTask();
+                Toast.makeText(MainActivity.this, "редактирование", Toast.LENGTH_SHORT).show();
+            }
+        });
         Button delete = findViewById(R.id.delete_btn);
         final Button edit = findViewById(R.id.edit_btn);
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,AddTaskActivity.class);
-                startActivityForResult(intent,43);
+                if (tasks != null) {
+                    Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
+                    startActivityForResult(intent, 43);
+                } else {
+                    Toast.makeText(MainActivity.this, "Список пуст", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tasks!=null) {
+                if (tasks != null) {
                     adapter.deleteLastTask();
                     Storage.save(tasks, MainActivity.this);
-                }else{
+                } else {
                     Toast.makeText(MainActivity.this, "Список пуст", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -69,12 +82,21 @@ public class MainActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             Storage.save(tasks, this);
         }
-        if (resultCode==RESULT_OK&&requestCode==43){
+        if (resultCode == RESULT_OK && requestCode == 43) {
             Task task = (Task) data.getSerializableExtra("edit");
             adapter.deleteLastTask();
             tasks.add(task);
             adapter.notifyDataSetChanged();
-            Storage.save(tasks,this);
+            Storage.save(tasks, this);
+        }
+    }
+
+    public void editTask() {
+        if (tasks != null) {
+            Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
+            startActivityForResult(intent, 43);
+        } else {
+            Toast.makeText(MainActivity.this, "Список пуст", Toast.LENGTH_SHORT).show();
         }
     }
 }
