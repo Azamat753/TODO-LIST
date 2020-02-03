@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Task> tasks = new ArrayList<>();
     TaskAdapter adapter;
 private Task task;
-
+int position;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,10 +70,14 @@ private Task task;
         }
         if (resultCode==RESULT_OK&&requestCode==1){
             Task task = (Task) data.getSerializableExtra("keys");
+            tasks.remove(tasks.get(position));
             tasks.add(task);
             adapter.notifyDataSetChanged();
             Storage.save(tasks, this);
         }
+    }
+    public void delete(){
+        tasks.remove(tasks.get(position));
     }
 
 }
