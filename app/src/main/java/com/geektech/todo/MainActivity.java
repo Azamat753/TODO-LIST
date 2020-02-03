@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Task> tasks = new ArrayList<>();
     TaskAdapter adapter;
-
+private Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +32,13 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new OnItemClickListener() {
+
             @Override
             public void onItemClick(int position) {
-                tasks.get(position);
-                editTask();
-                Storage.save(tasks, MainActivity.this);
+             task=tasks.get(position);
+                Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
+                intent.putExtra("key", task);
+                startActivityForResult(intent, 1);
                 Toast.makeText(MainActivity.this, "редактирование", Toast.LENGTH_SHORT).show();
             }
             @Override
@@ -44,10 +47,7 @@ public class MainActivity extends AppCompatActivity {
               adapter.notifyDataSetChanged();
                 Storage.save(tasks, MainActivity.this);
                 Toast.makeText(MainActivity.this, "Удалено", Toast.LENGTH_SHORT).show();
-
             }
-
-
         });
 
         Button button = findViewById(R.id.open);
@@ -59,34 +59,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 42) {
             Task task = (Task) data.getSerializableExtra("task");
-
             tasks.add(task);
             adapter.notifyDataSetChanged();
             Storage.save(tasks, this);
         }
-        if (resultCode == RESULT_OK && requestCode == 43) {
-            Task task = (Task) data.getSerializableExtra("edit");
+        if (resultCode==RESULT_OK&&requestCode==1){
+            Task task = (Task) data.getSerializableExtra("keys");
             tasks.add(task);
             adapter.notifyDataSetChanged();
             Storage.save(tasks, this);
         }
     }
-
-    public void editTask() {
-        if (tasks != null) {
-            Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
-            startActivityForResult(intent, 43);
-        } else {
-            Toast.makeText(MainActivity.this, "Список пуст", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 
 }
