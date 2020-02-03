@@ -38,14 +38,16 @@ public class MainActivity extends AppCompatActivity {
                 Storage.save(tasks, MainActivity.this);
                 Toast.makeText(MainActivity.this, "редактирование", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onItemLongClick(int position) {
-                adapter.deleteLastTask();
+                tasks.remove(tasks.get(position));
+              adapter.notifyDataSetChanged();
                 Storage.save(tasks, MainActivity.this);
                 Toast.makeText(MainActivity.this, "Удалено", Toast.LENGTH_SHORT).show();
 
             }
+
+
         });
 
         Button button = findViewById(R.id.open);
@@ -64,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 42) {
             Task task = (Task) data.getSerializableExtra("task");
+
             tasks.add(task);
             adapter.notifyDataSetChanged();
             Storage.save(tasks, this);
         }
         if (resultCode == RESULT_OK && requestCode == 43) {
             Task task = (Task) data.getSerializableExtra("edit");
-            adapter.deleteLastTask();
             tasks.add(task);
             adapter.notifyDataSetChanged();
             Storage.save(tasks, this);
@@ -85,4 +87,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Список пуст", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

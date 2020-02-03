@@ -44,16 +44,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void deleteLastTask() {
-        if (tasks != null) {
-            try {
-                tasks.remove(tasks.get(tasks.size() - 1));
-                notifyDataSetChanged();
-            } catch (Exception e) {
-                e.getMessage();
-            }
-        }
-    }
+
+
+
     class TaskViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
@@ -74,7 +67,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    onItemClickListener.onItemLongClick(getAdapterPosition());
+onItemClickListener.onItemLongClick(getAdapterPosition());
+
                     return false;
                 }
             });
