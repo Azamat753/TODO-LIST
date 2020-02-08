@@ -17,8 +17,9 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Task> tasks = new ArrayList<>();
     TaskAdapter adapter;
-private Task task;
-int position;
+    private Task task;
+    int position;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,18 +36,19 @@ int position;
 
             @Override
             public void onItemClick(int position) {
-             task=tasks.get(position);
+                task = tasks.get(position);
                 Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
                 intent.putExtra("key", task);
                 startActivityForResult(intent, 1);
                 Toast.makeText(MainActivity.this, "редактирование", Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onItemLongClick(int position) {
                 tasks.remove(tasks.get(position));
-              adapter.notifyDataSetChanged();
                 Storage.save(tasks, MainActivity.this);
                 Toast.makeText(MainActivity.this, "Удалено", Toast.LENGTH_SHORT).show();
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -59,25 +61,28 @@ int position;
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK && requestCode == 42) {
             Task task = (Task) data.getSerializableExtra("task");
             tasks.add(task);
-            adapter.notifyDataSetChanged();
             Storage.save(tasks, this);
+            adapter.notifyDataSetChanged();
         }
-        if (resultCode==RESULT_OK&&requestCode==1){
+
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            this.position=position;
             Task task = (Task) data.getSerializableExtra("keys");
             tasks.remove(tasks.get(position));
             tasks.add(task);
-            adapter.notifyDataSetChanged();
             Storage.save(tasks, this);
+            adapter.notifyDataSetChanged();
         }
     }
-    public void delete(){
-        tasks.remove(tasks.get(position));
-    }
+
+
 
 }
